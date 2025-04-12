@@ -1,7 +1,6 @@
 ﻿# SmartContract SendNative
-# AutoInstall Script
 
-AutoInstall adalah skrip otomatis untuk menginstal berbagai layanan seperti DNS Swap, Proxy Squid, Chromium, RDP, dan AdsPower. Skrip ini membantu mempermudah konfigurasi dengan hanya beberapa langkah sederhana.
+Script untuk send native balance evm melalui smart contract supdaya tidak terdeteksi sybil
 
 ## Cara Menggunakan
 
