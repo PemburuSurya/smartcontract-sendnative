@@ -19,6 +19,7 @@ npm install
 
 CONTRACT_ADDRESS <<< isi dengan contract adress smartcontract sendnative
 Buat smart contract dulu 
+
 (Jika belum ada gunakan [Pemburu Surya Deployer Smartcontract](https://github.com/PemburuSurya/Deployer-Smartcontract/))
 
 edit .env yang lain nya sesuikan
