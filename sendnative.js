@@ -31,17 +31,25 @@ async function sendNative() {
     const contract = new web3.eth.Contract(ABI, process.env.CONTRACT_ADDRESS);
     const value = web3.utils.toWei(process.env.AMOUNT, 'ether');
 
+    // Dapatkan nonce terbaru
+    const nonce = await web3.eth.getTransactionCount(account.address, 'pending');
+    console.log(`ℹ️ Menggunakan nonce: ${nonce}`);
+
     const txData = {
       from: account.address,
       to: process.env.CONTRACT_ADDRESS,
       data: contract.methods.sendETH(process.env.RECIPIENT).encodeABI(),
       value: value,
-      gas: process.env.GAS_LIMIT || 300000,
+      gas: process.env.GAS_LIMIT || 500000, // Gas lebih tinggi
       gasPrice: process.env.GAS_PRICE || await web3.eth.getGasPrice(),
+      nonce: nonce, // Menggunakan nonce yang sudah diambil
       type: '0x0'
     };
 
+    console.log('🔄 Menandatangani transaksi...');
     const signedTx = await web3.eth.accounts.signTransaction(txData, process.env.PRIVATE_KEY);
+    
+    console.log('🚀 Mengirim transaksi...');
     const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
     console.log(`
@@ -50,9 +58,13 @@ async function sendNative() {
       🔗 Explorer: ${process.env.EXPLORER_URL || 'https://testnet.0g.ai'}/tx/${receipt.transactionHash}
       💸 Amount: ${process.env.AMOUNT} ETH/SWAN
       🏦 Recipient: ${process.env.RECIPIENT}
+      ⛽ Gas Used: ${receipt.gasUsed}
     `);
   } catch (error) {
     console.error('❌ Gagal:', error.message);
+    if (error.receipt) {
+      console.error('📄 Receipt error:', error.receipt);
+    }
     process.exit(1);
   }
 }
